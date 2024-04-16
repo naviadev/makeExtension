@@ -1,0 +1,16 @@
+{
+  "manifest_version" : 3,
+  "name" : "manager",
+  "version" : "1.0",
+  "description" : "save u r memory",
+  "action" : {
+    "default_popup" : "doc/popup.html",
+    "list_popup" : "doc/popupPage2.html"
+  },
+  "permissions": [
+    "activeTab", "tabs", "storage"
+  ],
+  "background" : {
+    "service_worker" : "scripts/service_worker.js"
+  }
+}

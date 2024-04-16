@@ -1,0 +1,44 @@
+
+
+let removeButton = document.getElementById("deleteStorage");
+let deleteButton= document.getElementById("d");
+let printURL = document.getElementById("add");
+let creatTabButton = document.getElementsByClassName("creatTab");
+
+async function deleteTab()
+{
+  let queryOptions = { active: true, lastFocusedWindow:true};   // 받아올 탭의 조건
+  let [tab] = await chrome.tabs.query(queryOptions);  // 현재 탭
+
+  if(tab.id != null)
+  {
+    // 현재 탭의 url을 스토리지에 저장.
+    await chrome.storage.local.get("urlArr").then( 
+      (result)=>{
+        result.urlArr.push(tab.url);
+        chrome.storage.local.set({"urlArr" : result.urlArr});
+      }
+    );
+    chrome.tabs.remove(tab.id); // 현재 탭 닫기.
+  }
+  
+  return tab;
+}
+
+function loadList()
+{
+  if (chrome.storage.local.get("urlArr") == null || chrome.storage.local.get("urlArr") == undefined)
+  {
+    window.alert("저장된 링크가 존재하지 않습니다.");
+    return;
+  }
+  location.href = "popupPage2.html";
+}
+
+function removeStorage(){
+  chrome.storage.local.set({"urlArr" : [""]});
+}
+
+deleteButton?.addEventListener("click", deleteTab);
+printURL?.addEventListener("click", loadList);
+removeButton?.addEventListener("click", removeStorage);
